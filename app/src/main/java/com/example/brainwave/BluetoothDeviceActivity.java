@@ -11,6 +11,7 @@ import com.neurosky.connection.DataType.BodyDataType;
 import com.neurosky.connection.DataType.MindDataType;
 import com.neurosky.connection.DataType.MindDataType.FilterType;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
@@ -21,6 +22,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -39,8 +41,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class BluetoothDeviceActivity extends Activity{
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+public class BluetoothDeviceActivity extends AppCompatActivity {
     private static final String TAG = BluetoothDeviceActivity.class.getSimpleName();
+
     private TgStreamReader tgStreamReader;
 
     // TODO connection sdk
@@ -50,6 +57,9 @@ public class BluetoothDeviceActivity extends Activity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 99);
+        }
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -84,13 +94,13 @@ public class BluetoothDeviceActivity extends Activity{
     private TextView tv_theta = null;
     private TextView tv_lowalpha = null;
 
-    private TextView  tv_highalpha = null;
-    private TextView  tv_lowbeta = null;
-    private TextView  tv_highbeta = null;
+    private TextView tv_highalpha = null;
+    private TextView tv_lowbeta = null;
+    private TextView tv_highbeta = null;
 
-    private TextView  tv_lowgamma = null;
-    private TextView  tv_middlegamma  = null;
-    private TextView  tv_badpacket = null;
+    private TextView tv_lowgamma = null;
+    private TextView tv_middlegamma = null;
+    private TextView tv_badpacket = null;
 
     private Button btn_start = null;
     private Button btn_stop = null;
@@ -108,11 +118,11 @@ public class BluetoothDeviceActivity extends Activity{
         tv_lowalpha = (TextView) findViewById(R.id.tv_lowalpha);
 
         tv_highalpha = (TextView) findViewById(R.id.tv_highalpha);
-        tv_lowbeta= (TextView) findViewById(R.id.tv_lowbeta);
-        tv_highbeta= (TextView) findViewById(R.id.tv_highbeta);
+        tv_lowbeta = (TextView) findViewById(R.id.tv_lowbeta);
+        tv_highbeta = (TextView) findViewById(R.id.tv_highbeta);
 
         tv_lowgamma = (TextView) findViewById(R.id.tv_lowgamma);
-        tv_middlegamma= (TextView) findViewById(R.id.tv_middlegamma);
+        tv_middlegamma = (TextView) findViewById(R.id.tv_middlegamma);
         tv_badpacket = (TextView) findViewById(R.id.tv_badpacket);
 
 
@@ -125,7 +135,7 @@ public class BluetoothDeviceActivity extends Activity{
             @Override
             public void onClick(View arg0) {
                 badPacketCount = 0;
-                showToast("connecting ...",Toast.LENGTH_SHORT);
+                showToast("connecting ...", Toast.LENGTH_SHORT);
                 start();
             }
         });
@@ -135,14 +145,14 @@ public class BluetoothDeviceActivity extends Activity{
             @Override
             public void onClick(View arg0) {
                 // TODO Auto-generated method stub
-                if(tgStreamReader != null){
+                if (tgStreamReader != null) {
                     tgStreamReader.stop();
                 }
             }
 
         });
 
-        btn_selectdevice =  (Button) findViewById(R.id.btn_selectdevice);
+        btn_selectdevice = (Button) findViewById(R.id.btn_selectdevice);
 
         btn_selectdevice.setOnClickListener(new OnClickListener() {
 
@@ -155,19 +165,19 @@ public class BluetoothDeviceActivity extends Activity{
         });
     }
 
-    private void start(){
-        if(address != null){
+    private void start() {
+        if (address != null) {
             BluetoothDevice bd = mBluetoothAdapter.getRemoteDevice(address);
             createStreamReader(bd);
 
             tgStreamReader.connectAndStart();
-        }else{
+        } else {
             showToast("Please select device first!", Toast.LENGTH_SHORT);
         }
     }
 
     public void stop() {
-        if(tgStreamReader != null){
+        if (tgStreamReader != null) {
             tgStreamReader.stop();
             tgStreamReader.close();//if there is not stop cmd, please call close() or the data will accumulate
             tgStreamReader = null;
@@ -177,7 +187,7 @@ public class BluetoothDeviceActivity extends Activity{
     @Override
     protected void onDestroy() {
         // TODO Auto-generated method stub
-        if(tgStreamReader != null){
+        if (tgStreamReader != null) {
             tgStreamReader.close();
             tgStreamReader = null;
         }
@@ -198,6 +208,7 @@ public class BluetoothDeviceActivity extends Activity{
 
     // TODO view
     DrawWaveView waveView = null;
+
     // (2) demo of drawing ECG, set up of view
     public void setUpDrawWaveView() {
 
@@ -206,12 +217,14 @@ public class BluetoothDeviceActivity extends Activity{
                 LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         waveView.setValue(2048, 2048, -2048);
     }
+
     // (2) demo of drawing ECG, update view
     public void updateWaveView(int data) {
         if (waveView != null) {
             waveView.updateData(data);
         }
     }
+
     private int currentState = 0;
     private TgStreamHandler callback = new TgStreamHandler() {
 
@@ -219,7 +232,7 @@ public class BluetoothDeviceActivity extends Activity{
         public void onStatesChanged(int connectionStates) {
             // TODO Auto-generated method stub
             Log.d(TAG, "connectionStates change to: " + connectionStates);
-            currentState  = connectionStates;
+            currentState = connectionStates;
             switch (connectionStates) {
                 case ConnectionStates.STATE_CONNECTED:
                     //sensor.start();
@@ -242,10 +255,11 @@ public class BluetoothDeviceActivity extends Activity{
                 case ConnectionStates.STATE_DISCONNECTED:
                     break;
                 case ConnectionStates.STATE_ERROR:
-                    Log.d(TAG,"Connect error, Please try again!");
+                    Log.d(TAG, "Connect error, Please try again!");
                     break;
                 case ConnectionStates.STATE_FAILED:
-                    Log.d(TAG,"Connect failed, Please try again!");
+                    Log.d(TAG, "Connect failed, Please try again!");
+                    showToast("Connect failed", Toast.LENGTH_SHORT);
                     break;
             }
             Message msg = LinkDetectedHandler.obtainMessage();
@@ -259,7 +273,7 @@ public class BluetoothDeviceActivity extends Activity{
         @Override
         public void onRecordFail(int a) {
             // TODO Auto-generated method stub
-            Log.e(TAG,"onRecordFail: " +a);
+            Log.e(TAG, "onRecordFail: " + a);
 
         }
 
@@ -267,7 +281,7 @@ public class BluetoothDeviceActivity extends Activity{
         public void onChecksumFail(byte[] payload, int length, int checksum) {
             // TODO Auto-generated method stub
 
-            badPacketCount ++;
+            badPacketCount++;
             Message msg = LinkDetectedHandler.obtainMessage();
             msg.what = MSG_UPDATE_BAD_PACKET;
             msg.arg1 = badPacketCount;
@@ -296,7 +310,6 @@ public class BluetoothDeviceActivity extends Activity{
 
     int raw;
     private Handler LinkDetectedHandler = new Handler() {
-
         @Override
         public void handleMessage(Message msg) {
 
@@ -304,41 +317,40 @@ public class BluetoothDeviceActivity extends Activity{
                 case 1234:
                     tgStreamReader.MWM15_getFilterType();
                     isReadFilter = true;
-                    Log.d(TAG,"MWM15_getFilterType ");
+                    Log.d(TAG, "MWM15_getFilterType ");
 
                     break;
                 case 1235:
                     tgStreamReader.MWM15_setFilterType(FilterType.FILTER_60HZ);
-                    Log.d(TAG,"MWM15_setFilter  60HZ");
+                    Log.d(TAG, "MWM15_setFilter  60HZ");
                     LinkDetectedHandler.sendEmptyMessageDelayed(1237, 1000);
                     break;
                 case 1236:
                     tgStreamReader.MWM15_setFilterType(FilterType.FILTER_50HZ);
-                    Log.d(TAG,"MWM15_SetFilter 50HZ ");
+                    Log.d(TAG, "MWM15_SetFilter 50HZ ");
                     LinkDetectedHandler.sendEmptyMessageDelayed(1237, 1000);
                     break;
 
                 case 1237:
                     tgStreamReader.MWM15_getFilterType();
-                    Log.d(TAG,"MWM15_getFilterType ");
+                    Log.d(TAG, "MWM15_getFilterType ");
 
                     break;
 
                 case MindDataType.CODE_FILTER_TYPE:
-                    Log.d(TAG,"CODE_FILTER_TYPE: " + msg.arg1 + "  isReadFilter: " + isReadFilter);
-                    if(isReadFilter){
+                    Log.d(TAG, "CODE_FILTER_TYPE: " + msg.arg1 + "  isReadFilter: " + isReadFilter);
+                    if (isReadFilter) {
                         isReadFilter = false;
-                        if(msg.arg1 == FilterType.FILTER_50HZ.getValue()){
+                        if (msg.arg1 == FilterType.FILTER_50HZ.getValue()) {
                             LinkDetectedHandler.sendEmptyMessageDelayed(1235, 1000);
-                        }else if(msg.arg1 == FilterType.FILTER_60HZ.getValue()){
+                        } else if (msg.arg1 == FilterType.FILTER_60HZ.getValue()) {
                             LinkDetectedHandler.sendEmptyMessageDelayed(1236, 1000);
-                        }else{
-                            Log.e(TAG,"Error filter type");
+                        } else {
+                            Log.e(TAG, "Error filter type");
                         }
                     }
 
                     break;
-
 
 
                 case MindDataType.CODE_RAW:
@@ -346,29 +358,29 @@ public class BluetoothDeviceActivity extends Activity{
                     break;
                 case MindDataType.CODE_MEDITATION:
                     Log.d(TAG, "HeadDataType.CODE_MEDITATION " + msg.arg1);
-                    tv_meditation.setText("" +msg.arg1 );
+                    tv_meditation.setText("" + msg.arg1);
                     break;
                 case MindDataType.CODE_ATTENTION:
                     Log.d(TAG, "CODE_ATTENTION " + msg.arg1);
-                    tv_attention.setText("" +msg.arg1 );
+                    tv_attention.setText("" + msg.arg1);
                     break;
                 case MindDataType.CODE_EEGPOWER:
-                    EEGPower power = (EEGPower)msg.obj;
-                    if(power.isValidate()){
-                        tv_delta.setText("" +power.delta);
-                        tv_theta.setText("" +power.theta);
-                        tv_lowalpha.setText("" +power.lowAlpha);
-                        tv_highalpha.setText("" +power.highAlpha);
-                        tv_lowbeta.setText("" +power.lowBeta);
-                        tv_highbeta.setText("" +power.highBeta);
-                        tv_lowgamma.setText("" +power.lowGamma);
-                        tv_middlegamma.setText("" +power.middleGamma);
+                    EEGPower power = (EEGPower) msg.obj;
+                    if (power.isValidate()) {
+                        tv_delta.setText("" + power.delta);
+                        tv_theta.setText("" + power.theta);
+                        tv_lowalpha.setText("" + power.lowAlpha);
+                        tv_highalpha.setText("" + power.highAlpha);
+                        tv_lowbeta.setText("" + power.lowBeta);
+                        tv_highbeta.setText("" + power.highBeta);
+                        tv_lowgamma.setText("" + power.lowGamma);
+                        tv_middlegamma.setText("" + power.middleGamma);
                     }
                     break;
                 case MindDataType.CODE_POOR_SIGNAL://
                     int poorSignal = msg.arg1;
                     Log.d(TAG, "poorSignal:" + poorSignal);
-                    tv_ps.setText(""+msg.arg1);
+                    tv_ps.setText("" + msg.arg1);
 
                     break;
                 case MSG_UPDATE_BAD_PACKET:
@@ -383,11 +395,9 @@ public class BluetoothDeviceActivity extends Activity{
     };
 
 
-    public void showToast(final String msg,final int timeStyle){
-        BluetoothDeviceActivity.this.runOnUiThread(new Runnable()
-        {
-            public void run()
-            {
+    public void showToast(final String msg, final int timeStyle) {
+        BluetoothDeviceActivity.this.runOnUiThread(new Runnable() {
+            public void run() {
                 Toast.makeText(getApplicationContext(), msg, timeStyle).show();
             }
 
@@ -400,9 +410,9 @@ public class BluetoothDeviceActivity extends Activity{
     private Dialog selectDialog;
 
     // (3) Demo of getting Bluetooth device dynamically
-    public void scanDevice(){
+    public void scanDevice() {
 
-        if(mBluetoothAdapter.isDiscovering()){
+        if (mBluetoothAdapter.isDiscovering()) {
             mBluetoothAdapter.cancelDiscovery();
         }
 

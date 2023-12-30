@@ -23,7 +23,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FileDemoActivity extends Activity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class FileDemoActivity extends AppCompatActivity {
     private static final String TAG = FileDemoActivity.class.getSimpleName();
 
     private TextView tv_ps = null;
@@ -237,7 +239,6 @@ public class FileDemoActivity extends Activity {
 
     int raw;
     private Handler LinkDetectedHandler = new Handler() {
-
         @Override
         public void handleMessage(Message msg) {
 
