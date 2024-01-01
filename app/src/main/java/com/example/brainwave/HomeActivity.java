@@ -81,7 +81,7 @@ public class HomeActivity extends AppCompatActivity {
         gameCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, BluetoothDeviceActivity.class);
+                Intent intent = new Intent(HomeActivity.this, UpdateActivity.class);
                 startActivity(intent);
             }
         });
