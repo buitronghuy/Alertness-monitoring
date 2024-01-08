@@ -62,7 +62,7 @@ public class MonitoringActivity extends AppCompatActivity{
     private TgStreamReader tgStreamReader;
     private BluetoothAdapter mBluetoothAdapter;
 
-    private String filename = "EEGData.txt";
+    private String filename = "_EEGData.txt";
 
     private String foldername = "Focuson";
     File myExternalFile;
@@ -127,7 +127,7 @@ public class MonitoringActivity extends AppCompatActivity{
         btn_start.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                myExternalFile = new File(getExternalFilesDir(foldername), getCurrentTime().substring(0,19) + "_EEGData.txt");
+                myExternalFile = new File(getExternalFilesDir(foldername), getCurrentTime().substring(0,19) + filename);
                 badPacketCount = 0;
 
 //                // (3) How to destroy a TgStreamReader object

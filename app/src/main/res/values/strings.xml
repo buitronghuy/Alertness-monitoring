@@ -10,6 +10,10 @@
         <item>Sitting</item>
         <item>Standing</item>
     </string-array>
+    <string-array name="list_labels_status">
+        <item>Buồn ngủ</item>
+        <item>Tỉnh táo</item>
+    </string-array>
     <string name="butten_get_model">Update Model</string>
     <string name="folder_sync">DropsyncFiles</string>
     <string name="load_error">Load model error</string>
@@ -17,5 +21,6 @@
     <string name="train_finish">Training is finished</string>
     <string name="label_complete">Sample is labelled.</string>
     <string name="butten_inference">Infer</string>
+    <string name="butten_stop">Stop</string>
     <string name="warning_load_model">Please load model first.</string>
 </resources>

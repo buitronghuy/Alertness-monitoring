@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -32,7 +33,8 @@ public class TrainModel {
     public static final File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
     public static final File syncDir = Environment.getExternalStoragePublicDirectory("DropsyncFiles");
     public static final File locateToSaveDataSet = new File(dir, "labelled_dataset.txt");
-    public static final File locateToLoadModel = new File(syncDir, "Trained_HAR_NN.zip");
+//    public static final File locateToLoadModel = new File(syncDir, "Trained_HAR_NN.zip");
+    public static final File locateToLoadModel = new File(dir, "trained_har_nn.zip");
     public static String id = null;
 
     private static final int numHiddenNodes = 1000;

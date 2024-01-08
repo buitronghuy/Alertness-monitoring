@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace 'com.example.brainwave'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.brainwave"
         minSdk 27
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -20,6 +20,7 @@ android {
     packagingOptions {
         exclude 'META-INF/proguard/androidx-annotations.pro'
         exclude 'META-INF/native-image/**'
+        exclude 'META-INF/DEPENDENCIES'
     }
 
     buildTypes {
@@ -37,7 +38,7 @@ android {
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation files('libs/libStreamSDK.jar')
     testImplementation 'junit:junit:4.13.2'
@@ -70,6 +71,11 @@ dependencies {
     implementation group: 'org.bytedeco', name: 'leptonica', version: '1.82.0-1.5.7', classifier: "android-arm64"
     implementation group: 'org.bytedeco', name: 'leptonica', version: '1.82.0-1.5.7', classifier: "android-x86"
     implementation group: 'org.bytedeco', name: 'leptonica', version: '1.82.0-1.5.7', classifier: "android-x86_64"
+
+//    implementation 'org.apache.httpcomponents:httpcore:4.4.15'
+//    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+//    implementation 'net.sourceforge.htmlunit:htmlunit-android:2.63.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
 
     implementation 'com.google.code.gson:gson:2.8.9'
 //    annotationProcessor 'org.projectlombok:lombok:1.16.16'

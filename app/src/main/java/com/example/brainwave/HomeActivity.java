@@ -73,7 +73,7 @@ public class HomeActivity extends AppCompatActivity {
         demoCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, FileDemoActivity.class);
+                Intent intent = new Intent(HomeActivity.this, LabeledActivity.class);
                 startActivity(intent);
             }
         });
