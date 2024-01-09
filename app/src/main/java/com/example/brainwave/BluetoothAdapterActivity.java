@@ -133,7 +133,7 @@ public class BluetoothAdapterActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 badPacketCount = 0;
-		showToast("Connecting...", Toast.LENGTH_SHORT);
+		        showToast("Connecting...", Toast.LENGTH_SHORT);
 
                 // (5) demo of isBTConnected
                 if(tgStreamReader != null && tgStreamReader.isBTConnected()){

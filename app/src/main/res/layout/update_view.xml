@@ -37,7 +37,7 @@
         android:text="Tải về các bản cập nhật khi cần thiết"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#000000"
-        android:textSize="20dp" />
+        android:textSize="20sp" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -81,7 +81,7 @@
         android:layout_centerHorizontal="true"
         android:text="Update Model"
         android:textColor="#ffffffff"
-        android:textSize="16dp" />
+        android:textSize="16sp" />
     <Button
         android:id="@+id/btn_upload"
         android:layout_width="wrap_content"
@@ -90,7 +90,7 @@
         android:layout_centerHorizontal="true"
         android:text="Share Model"
         android:textColor="#ffffffff"
-        android:textSize="16dp" />
+        android:textSize="16sp" />
 
 </RelativeLayout>
 

@@ -71,15 +71,14 @@ public class UpdateActivity extends AppCompatActivity implements ActivityCompat.
     // read and write permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
-//            Manifest.permission.READ_EXTERNAL_STORAGE,
-//            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-//            Manifest.permission.MANAGE_EXTERNAL_STORAGE,
-            Manifest.permission.INTERNET
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.MANAGE_EXTERNAL_STORAGE
     };
 
     public static void verifyStoragePermission(Activity activity) {
         // Get permission status
-        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.INTERNET);
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.MANAGE_EXTERNAL_STORAGE);
         if (permission != PackageManager.PERMISSION_GRANTED) {
             // We don't have permission we request it
             ActivityCompat.requestPermissions(
